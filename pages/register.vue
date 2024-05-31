@@ -21,7 +21,7 @@ async function SignUp() {
     <div class="register_page">
         <div class="register_form">
             <div class="description">
-                <p class="background">Auth</p>
+                <p>Registration</p>
             </div>
             <div class="form">
                 <form class="form" @submit.prevent="SignUp">
@@ -83,6 +83,7 @@ async function SignUp() {
 
 .description {
     font-size: 28px;
+    user-select: none;
 }
 
 .field_input {
@@ -139,6 +140,7 @@ async function SignUp() {
 
 
 .login {
+    user-select: none;
     font-size: 20px;
     padding: 10px;
     color: #880099;

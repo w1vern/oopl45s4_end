@@ -44,7 +44,7 @@ const headerIsVisible = ref(true)
   }
 
   .header {
-    height: max-content;
+    height:8%;
     width: 100%;
     background-color: #111010;
     display: flex;
@@ -79,7 +79,7 @@ const headerIsVisible = ref(true)
     font-size: 30px;
   }
 
-  .link :hover{
+  .link:hover{
     background-color: #333030;
   }
 </style>

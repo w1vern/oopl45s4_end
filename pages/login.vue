@@ -2,13 +2,11 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 const incorrect_data = ref(false)
-const login = ref('')
-const password = ref('')
-const remember = ref(false)
+const form = ref({ login: '', password: '', remember: false })
 
 const router = useRouter()
 
-async function SignIn(){
+async function SignIn() {
     if (login.value === '1') {
         router.push('/lobby')
     } else {
@@ -27,14 +25,14 @@ async function SignIn(){
                 <form class="form" @submit.prevent="SignIn">
                     <p>
                         <input class="field_input" id="login" name="login" placeholder="Login" required="" type="text"
-                            v-model="login">
+                            v-model="form.login">
                     </p>
                     <p>
                         <input class="field_input" id="password" name="password" placeholder="Password" required=""
-                            type="password" v-model="password">
+                            type="password" v-model="form.password">
                     </p>
                     <p class="remember_me_container">
-                        <input id="remember_me" name="remember_me" type="checkbox" v-model="remember">
+                        <input id="remember_me" name="remember_me" type="checkbox" v-model="form.remember">
                         <label for="remember_me"> remember me</label>
                     </p>
                     <p>
@@ -84,6 +82,7 @@ async function SignIn(){
 
 .description {
     font-size: 28px;
+    user-select: none;
 }
 
 .field_input {
@@ -116,26 +115,26 @@ async function SignIn(){
 }
 
 .remember_me_container input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 14px;
-  height: 14px;
-  border: 2px solid #550066;
-  border-radius: 3px;
-  outline: none;
-  cursor: pointer;
-  position: relative;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #550066;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+    position: relative;
 }
 
 .remember_me_container input[type="checkbox"]:checked::before {
-  content: "\2714";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 13px;
-  color: #9900aa;
+    content: "\2714";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 13px;
+    color: #9900aa;
 }
 
 .enter_button_container {
@@ -163,6 +162,7 @@ async function SignIn(){
 
 
 .register {
+    user-select: none;
     font-size: 20px;
     padding: 10px;
     color: #880099;
