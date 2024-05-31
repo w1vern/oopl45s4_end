@@ -65,6 +65,10 @@ async function SignIn(){
     border: none;
 }
 
+.login_page * ::selection {
+    background-color: #550066;
+}
+
 .login_form {
     display: flex;
     justify-content: center;

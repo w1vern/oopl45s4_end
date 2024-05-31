@@ -18,8 +18,8 @@ async function SignUp() {
 </script>
 
 <template>
-    <div class="login_page">
-        <div class="login_form">
+    <div class="register_page">
+        <div class="register_form">
             <div class="description">
                 <p class="background">Auth</p>
             </div>
@@ -50,7 +50,7 @@ async function SignUp() {
 </template>
 
 <style scoped>
-.login_page {
+.register_page {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -59,12 +59,16 @@ async function SignUp() {
     height: 100%;
 }
 
-.login_page * {
+.register_page * {
     caret-color: transparent;
     border: none;
 }
 
-.login_form {
+.register_page * ::selection{
+   background-color: #550066;
+}
+
+.register_form {
     display: flex;
     justify-content: center;
     align-content: center;
@@ -144,4 +148,6 @@ async function SignUp() {
 .login:hover {
     color: #aa00bb;
 }
+
+
 </style>
