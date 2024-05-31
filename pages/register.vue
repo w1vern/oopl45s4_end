@@ -1,6 +1,20 @@
 <script setup>
-    import { ref } from 'vue';
-    const incorrect_data = ref(false);
+import { ref } from 'vue';
+import { useRouter } from 'vue-router'
+const incorrect_data = ref(false)
+const login = ref('')
+const password1 = ref('')
+const password2 = ref('')
+
+const router = useRouter()
+
+async function SignUp() {
+    if (password1.value === password2.value) {
+        router.push('/login')
+    } else {
+        incorrect_data.value = true
+    }
+}
 </script>
 
 <template>
@@ -10,20 +24,20 @@
                 <p class="background">Auth</p>
             </div>
             <div class="form">
-                <form class="form">
+                <form class="form" @submit.prevent="SignUp">
                     <p>
-                        <input class="field_input" id="login" name="login" placeholder="Login" required="" type="text">
+                        <input class="field_input" id="login" name="login" placeholder="Login" required="" type="text" v-model="login">
                     </p>
                     <p>
                         <input class="field_input" id="password" name="password" placeholder="Password" required=""
-                            type="password">
+                            type="password" v-model="password1">
                     </p>
                     <p>
-                        <input class="field_input" id="password" name="password" placeholder="Repeat Password" required=""
-                            type="password">
+                        <input class="field_input" id="password" name="password" placeholder="Repeat Password"
+                            required="" type="password" v-model="password2">
                     </p>
-                    <p class="enter_button_container">
-                        <input class="enter_button" id="Sign" name="Sign" required="" type="submit" value="Sign Up">
+                    <p>
+                        <input class="enter_button" id="Sign" name="Sign" type="submit" value="Sign Up">
                     </p>
                     <p v-if="incorrect_data" class="auth_error">
                         This login is already in use<br> or the passwords do not match
@@ -113,6 +127,7 @@
 .enter_button:hover {
     background-color: #770088;
 }
+
 .auth_error {
     color: red;
     font-size: 15px;
@@ -125,8 +140,8 @@
     color: #880099;
     text-decoration: none;
 }
-.login:hover{
+
+.login:hover {
     color: #aa00bb;
 }
-
 </style>
