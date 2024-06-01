@@ -145,6 +145,7 @@ async function SignUp() {
     padding: 10px;
     color: #880099;
     text-decoration: none;
+    font-weight: 900;
 }
 
 .login:hover {

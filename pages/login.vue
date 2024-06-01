@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 const incorrect_data = ref(false)
 const form = ref({ login: '', password: '', remember: false })
@@ -7,7 +7,7 @@ const form = ref({ login: '', password: '', remember: false })
 const router = useRouter()
 
 async function SignIn() {
-    if (login.value === '1') {
+    if (form.login.value === '1') {
         router.push('/lobby')
     } else {
         incorrect_data.value = true
@@ -97,7 +97,6 @@ async function SignIn() {
 
 .field_input:focus {
     caret-color: #9900aa;
-    outline: none;
     outline: 2px solid #550066;
 }
 
@@ -167,6 +166,7 @@ async function SignIn() {
     padding: 10px;
     color: #880099;
     text-decoration: none;
+    font-weight: 900;
 }
 
 .register:hover {
