@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 const headerIsVisible = ref(true)
 const isAuth = ref(true)
-const login = ref('aboba')
+const login = ref('User#1234')
 
 const router = useRouter()
 
@@ -39,17 +39,20 @@ async function SignUp() {
           <input class="login_button" value="Sign Up" type="button" @click="SignUp">
         </div>
       </div>
-
     </div>
   </div>
   <div class="main">
     <NuxtPage />
   </div>
+
+
 </template>
 
 <style>
 #__nuxt {
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 body {
@@ -66,6 +69,19 @@ body {
 * {
   padding: 0;
   margin: 0;
+}
+
+::-webkit-scrollbar {
+  background-color: #111010;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #222020;
+  border-radius: 6px;
+  outline: 2px solid #111010;
+  border: none;
+}
+::-webkit-scrollbar-track {
+  background-color: #111010;
 }
 
 .header {
