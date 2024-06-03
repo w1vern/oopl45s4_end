@@ -1,14 +1,14 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { UseLoginStore } from './stores/login';
 const headerIsVisible = ref(true)
-const isAuth = ref(true)
-const login = ref('User#1234')
 
 const router = useRouter()
 
 async function SignOut() {
-  isAuth.value = false
+  await apiUsersLogout()
+  await loginStore.fetch()
 }
 async function SignIn() {
   router.push('/login')
@@ -16,6 +16,14 @@ async function SignIn() {
 async function SignUp() {
   router.push('/register')
 }
+
+const loginStore = UseLoginStore()
+await callOnce(loginStore.fetch)
+
+onMounted(async () => {
+  await loginStore.fetch()
+})
+
 </script>
 
 <template>
@@ -29,9 +37,9 @@ async function SignUp() {
       </div>
     </div>
     <div class="right_menu">
-      <div class="profile" v-if="isAuth">
+      <div class="profile" v-if="loginStore.auth">
         <input class="login_button" value="Sign Out" type="button" @click="SignOut">
-        <p class="login">{{ login }}</p>
+        <p class="login">{{ loginStore.username }}</p>
       </div>
       <div class="profile" v-else>
         <div class="link">
@@ -74,12 +82,14 @@ body {
 ::-webkit-scrollbar {
   background-color: #111010;
 }
+
 ::-webkit-scrollbar-thumb {
   background-color: #222020;
   border-radius: 6px;
   outline: 2px solid #111010;
   border: none;
 }
+
 ::-webkit-scrollbar-track {
   background-color: #111010;
 }

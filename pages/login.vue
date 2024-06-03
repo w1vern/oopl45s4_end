@@ -3,16 +3,22 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 const incorrect_data = ref(false)
 const form = ref({ login: '', password: '', remember: false })
+const error = ref('Incorrect login or password')
 
 const router = useRouter()
 
 async function SignIn() {
-    if (form.login.value === '1') {
+    const data = await apiUsersLogin(form)
+    if (data == 200) {
+        const loginStore = UseLoginStore()
+        await loginStore.fetch()
         router.push('/lobby')
     } else {
         incorrect_data.value = true
     }
 }
+
+
 </script>
 
 <template>
@@ -39,7 +45,7 @@ async function SignIn() {
                         <input class="enter_button" id="Sign" name="Sign" type="submit" value="Sign In">
                     </p>
                     <p v-if="incorrect_data" class="auth_error">
-                        Incorrect login or password
+                        {{ error }}
                     </p>
                 </form>
             </div>

@@ -1,20 +1,28 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'
+
 const incorrect_data = ref(false)
-const login = ref('')
-const password1 = ref('')
-const password2 = ref('')
+
+const form = ref({login:ref(''),password1:ref(''),password2:ref('')})
+
+const error = ref('This login is already in use or the passwords do not match')
 
 const router = useRouter()
 
-async function SignUp() {
-    if (password1.value === password2.value) {
+
+async function SignUp()
+{
+    const data = await apiUsersRegister(form)
+    if(data == 200)
+    {
         router.push('/login')
-    } else {
+    }
+    else {
         incorrect_data.value = true
     }
 }
+
 </script>
 
 <template>
@@ -26,21 +34,21 @@ async function SignUp() {
             <div class="form">
                 <form class="form" @submit.prevent="SignUp">
                     <p>
-                        <input class="field_input" id="login" name="login" placeholder="Login" required="" type="text" v-model="login">
+                        <input class="field_input" id="login" name="login" placeholder="Login" required="" type="text" v-model="form.login">
                     </p>
                     <p>
-                        <input class="field_input" id="password" name="password" placeholder="Password" required=""
-                            type="password" v-model="password1">
+                        <input class="field_input" id="password1" name="password" placeholder="Password" required=""
+                            type="password" v-model="form.password1">
                     </p>
                     <p>
-                        <input class="field_input" id="password" name="password" placeholder="Repeat Password"
-                            required="" type="password" v-model="password2">
+                        <input class="field_input" id="password2" name="password" placeholder="Repeat Password"
+                            required="" type="password" v-model="form.password2">
                     </p>
                     <p>
                         <input class="enter_button" id="Sign" name="Sign" type="submit" value="Sign Up">
                     </p>
                     <p v-if="incorrect_data" class="auth_error">
-                        This login is already in use<br> or the passwords do not match
+                        {{ error }}
                     </p>
                 </form>
             </div>
