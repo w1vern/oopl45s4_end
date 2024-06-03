@@ -37,6 +37,9 @@ onMounted(async () => {
       </div>
     </div>
     <div class="right_menu">
+      <div class="current_match" @click="connect_current_match">
+        <p class="current_match_label">Connect to current match</p>
+      </div>
       <div class="profile" v-if="loginStore.auth">
         <input class="login_button" value="Sign Out" type="button" @click="SignOut">
         <p class="login">{{ loginStore.username }}</p>
@@ -150,7 +153,7 @@ body {
   width: 100%;
 }
 
-.login_button {
+.login_button{
   height: 100%;
   background-color: #111010;
   color: white;

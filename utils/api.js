@@ -97,3 +97,20 @@ export async function apiUsersLogout() {
 
     }
 }
+
+export async function apiMatchInfo(id) {
+    let res = {
+        info: {},
+        isError: false
+    }
+    try {
+        const response = await $fetch.raw(kostyl + `api/Matches/${id}`, { method: 'GET' })
+        if (response.status == 200) {
+            res.info = response._data
+        }
+    }
+    catch (error) {
+        res.isError = true
+    }
+    return res;
+}

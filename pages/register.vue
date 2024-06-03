@@ -144,6 +144,7 @@ async function SignUp()
 .auth_error {
     color: red;
     font-size: 15px;
+    width: 100%;
 }
 
 
