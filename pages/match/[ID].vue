@@ -1,14 +1,16 @@
 <script setup>
 import { ref } from 'vue'
-import { HubConnectionBuilder } from "@microsoft/signalr";
+import { useRouter } from 'vue-router'
+import { HubConnectionBuilder, JsonHubProtocol } from "@microsoft/signalr";
 
+const router = useRouter()
 const route = useRoute()
 const loginStore = UseLoginStore()
 
 const isAwaiting = ref(true)
 const localStream = ref({})
 const playerInfos = ref({})
-const connection = new HubConnectionBuilder().withUrl("/api/signal").build()
+let connection = {}
 
 
 const matchInfo = ref({
@@ -21,7 +23,7 @@ const matchInfo = ref({
 })
 
 const streams = ref({})
-const peers = ref([])
+const peers = ref({})
 
 
 async function startMatch() {
@@ -36,7 +38,8 @@ const players = computed(() => {
       role: "",
       stream: null
     }
-    if (streams[element]) plr.stream = streams[element]
+    if (element == loginStore.ID) return;
+    if (streams.value[element]) plr.stream = streams.value[element]
     plrs.push(plr)
   });
   return plrs
@@ -45,60 +48,96 @@ const players = computed(() => {
 async function updateMatchInfo() {
   let info = await apiMatchInfo(route.params["ID"])
   if (!info.isError) matchInfo.value = info.info;
+  if (info.isError) router.push('/lobby')
 }
 
-var pc_config = { "iceServers": [{ "urls": ["stun:stun.l.google.com:19302"] }] };
+var pc_config = { "iceServers": [{ "urls": "stun:stun.l.google.com:19302" }] };
 var pc_constraints = { "optional": [{ "DtlsSrtpKeyAgreement": true }] };
 
-function createPeer(userToSignal, callerID, stream) {
+function createPeer(userToSignal, callerID) {
 
-  const localConnection  = new RTCPeerConnection(pc_config, pc_constraints);
+  const localConnection = new RTCPeerConnection();
 
-  localConnection.onicecandidate = (candidate) => {
-    candidate && connection.invoke("Candidate", userToSignal, candidate)
-  }
-  
-  localConnection.ontrack = (stream) => {
-    streams[userToSignal] = stream
+  localStream.value.getTracks().forEach(track => localConnection.addTrack(track, localStream.value));
+
+  localConnection.onicecandidate = ({ candidate }) => {
+    candidate && connection.invoke("Candidate", userToSignal, JSON.stringify(candidate))
   }
 
+  localConnection.ontrack = ({ streams: [ stream ] }) => {
+    console.log("STREAM!!! (from create)")
+    console.log(stream)
+    streams.value[userToSignal] = stream
+  }
+
+  peers.value[userToSignal] = localConnection
   localConnection
-      .createOffer()
-      .then(offer => localConnection.setLocalDescription(offer))
-      .then(() => {
-        connection.invoke('Offer', userToSignal, localConnection.localDescription);
-      });
+    .createOffer()
+    .then(offer => localConnection.setLocalDescription(offer))
+    .then(() => {
+      connection.invoke('Offer', userToSignal, JSON.stringify(localConnection.localDescription));
+    });
 
   return localConnection;
 }
 
-
 onMounted(async () => {
+  connection = new HubConnectionBuilder().withUrl("/api/signal").build()
   await getUserMedia();
   await updateMatchInfo()
-  connection.start().then(() => connection.invoke("Join", route.params["ID"]))
 
   connection.on("Connected", (users) => {
-    const tempPeers = {};
+    console.log("Connected")
+    console.log(users)
     for (let i = 0; i < users.length; i++) {
       const userID = users[i];
-      const peer = createPeer(userID, loginStore.ID, localStream);
-      tempPeers.push(peer);
+      console.log(userID)
+      if(userID == loginStore.ID) continue
+      createPeer(userID, loginStore.ID);
     }
-    peers.value = tempPeers
   })
 
-  connection.on("Offer", (id, invoker_id, description) => {
-    console.log(id)
-    console.log(description)
+  connection.on("IncomingOffer", (invoker_id, description) => {
+    console.log("Offer from " + invoker_id)
+    console.log(JSON.parse(description))
+    const localConnection = new RTCPeerConnection();
+
+    localStream.value.getTracks().forEach(track => localConnection.addTrack(track, localStream.value));
+
+    localConnection.onicecandidate = ({ candidate }) => {
+      candidate && connection.invoke("Candidate", invoker_id, JSON.stringify(candidate))
+    }
+
+    localConnection.ontrack = ({ streams: [ stream ] }) => {
+      console.log("STREAM!!! (from offer)")
+      console.log(stream)
+      streams.value[invoker_id] = stream
+    }
+    peers.value[invoker_id] = localConnection
+    localConnection
+      .setRemoteDescription(JSON.parse(description))
+      .then(() => localConnection.createAnswer())
+      .then(answer => localConnection.setLocalDescription(answer))
+      .then(() => {
+        console.log(localConnection.localDescription)
+        connection.invoke('Answer', invoker_id, JSON.stringify(localConnection.localDescription));
+      });
   })
 
-  connection.on("Candidate", (id, invoker_id, description) => {
-    console.log(id)
+  connection.on("IncomingAnswer", (invoker_id, description) => {
+    console.log("Answer from " + invoker_id)
+    console.log(JSON.parse(description))
+    peers.value[invoker_id].setRemoteDescription(JSON.parse(description))
+  })
+
+  connection.on("CandidateOffer", (invoker_id, description) => {
+    console.log("Candidate")
     console.log(description)
+    peers.value[invoker_id].addIceCandidate(new RTCIceCandidate(JSON.parse(description)));
   })
 
   connection.on("Refresh", () => { updateMatchInfo() })
+  connection.start().then(() => connection.invoke("Join", route.params["ID"]))
 })
 
 onUnmounted(() => {
@@ -111,6 +150,7 @@ async function getUserMedia() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
       localStream.value = stream;
+      console.log(stream)
     } catch (error) {
       console.log(`getUserMedia error: ${error}`);
     }
@@ -120,28 +160,28 @@ async function getUserMedia() {
 
 <template>
   <div class="match_page">
-    <dev class="left_block">
-      <dev class="main_cameras" id="host_camera">
+    <div class="left_block">
+      <div class="main_cameras" id="host_camera">
         <video_block></video_block>
-      </dev>
-      <dev class="main_cameras" id="active_camera">
+      </div>
+      <div class="main_cameras" id="active_camera">
         <video_block></video_block>
-      </dev>
-      <dev class="main_cameras" id="player_camera">
+      </div>
+      <div class="main_cameras" id="player_camera">
         <video_block :stream="localStream" :muted="true"></video_block>
-      </dev>
-      <dev class="service_field">
+      </div>
+      <div class="service_field">
 
-      </dev>
-    </dev>
-    <dev class="right_block">
-      <dev class="other_cameras">
+      </div>
+    </div>
+    <div class="right_block">
+      <div class="other_cameras">
         <div class="cam" v-for="plr in players">
           <player :info="plr"></player>
         </div>
 
-      </dev>
-    </dev>
+      </div>
+    </div>
   </div>
 
   <div class="awaiting_page" v-if="isAwaiting">
@@ -150,6 +190,11 @@ async function getUserMedia() {
 </template>
 
 <style scoped>
+.cam {
+  width: 25%;
+  box-sizing: border-box;
+
+}
 .main_cameras {
   aspect-ratio: 16/9;
   box-sizing: border-box;

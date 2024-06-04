@@ -9,8 +9,8 @@ const props = defineProps({
 
 <template>
     <div class="video_block">
-        <video :srcObject="props.stream" autoplay v-if="!props.muted"></video>
-        <video :srcObject="props.stream" autoplay muted v-if="props.muted"></video>
+        <video :srcObject.prop="props.stream" autoplay v-if="!props.muted"></video>
+        <video :srcObject.prop="props.stream" autoplay muted v-if="props.muted"></video>
     </div>
 </template>
 

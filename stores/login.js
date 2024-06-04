@@ -1,5 +1,6 @@
 export const UseLoginStore = defineStore('loginStore', {
   state: () => ({
+    ID: '',
     username: '',
     auth: false,
     InCurrentMatch: false
@@ -10,6 +11,7 @@ export const UseLoginStore = defineStore('loginStore', {
       this.username = info.username
       this.auth = info.auth
       this.InCurrentMatch = info.InCurrentMatch
+      this.ID = info.ID
     }
   }
 })

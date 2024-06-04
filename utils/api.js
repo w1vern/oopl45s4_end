@@ -70,7 +70,8 @@ export async function apiUsersGetUser() {
         username: '',
         auth: false,
         InCurrentMatch: false,
-        isError: false
+        isError: false,
+        ID: ''
     }
     try {
         const response = await $fetch.raw(kostyl + 'api/Users', { method: 'GET' })
@@ -78,6 +79,7 @@ export async function apiUsersGetUser() {
             res.username = response._data.name
             res.InCurrentMatch = response._data.matchInProgress
             res.auth = true
+            res.ID = response._data.id
         }
     }
     catch (error) {
