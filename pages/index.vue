@@ -62,6 +62,7 @@ const roles = ref([{
     cursor: default;
     user-select: none;
     padding: 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .block_content {
@@ -94,7 +95,6 @@ const roles = ref([{
     color: linear-gradient(280deg, rgba(55, 18, 90, 0.603) 0%, rgba(0, 197, 223, 0.527) 37%, rgba(97, 255, 83, 0.466) 69%, rgb(143, 0, 95) 100%);
     text-shadow: #91ff70;
     text-indent: 10%;
-    font-family: fantasy;
     /* background-image: url('./res/bg.png'); */
 }
 
@@ -104,7 +104,6 @@ const roles = ref([{
     color: linear-gradient(280deg, rgba(55, 18, 90, 0.603) 0%, rgba(0, 197, 223, 0.527) 37%, rgba(97, 255, 83, 0.466) 69%, rgb(143, 0, 95) 100%);
     text-shadow: #91ff70;
     text-indent: 10%;
-    font-family: fantasy;
     /* background-image: url('./res/bg.png'); */
 }
 
@@ -126,7 +125,6 @@ const roles = ref([{
     color: linear-gradient(280deg, rgba(55, 18, 90, 0.603) 0%, rgba(0, 197, 223, 0.527) 37%, rgba(97, 255, 83, 0.466) 69%, rgb(143, 0, 95) 100%);
     text-shadow: #91ff70;
     text-indent: 50px;
-    font-family: fantasy;
 }
 
 .roles {
@@ -147,7 +145,5 @@ const roles = ref([{
     color: linear-gradient(280deg, rgba(55, 18, 90, 0.603) 0%, rgba(0, 197, 223, 0.527) 37%, rgba(97, 255, 83, 0.466) 69%, rgb(143, 0, 95) 100%);
     text-shadow: #91ff70;
     text-indent: 10%;
-    font-family: fantasy;
-    /* background-image: url('./res/bg.png'); */
 }
 </style>

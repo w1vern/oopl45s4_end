@@ -31,6 +31,7 @@ body {
   /* display: flex; */
   justify-content: center;
   align-items: center;
+  /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
 }
 
 .header {
@@ -51,7 +52,6 @@ body {
   color: linear-gradient(280deg, rgba(55, 18, 90, 0.603) 0%, rgba(0, 197, 223, 0.527) 37%, rgba(97, 255, 83, 0.466) 69%, rgb(143, 0, 95) 100%);
   text-shadow: #91ff70;
   text-indent: 10%;
-  font-family: fantasy;
   /* background-image: url('./res/bg.png'); */
 }
 
@@ -61,7 +61,6 @@ body {
   color: linear-gradient(280deg, rgba(55, 18, 90, 0.603) 0%, rgba(0, 197, 223, 0.527) 37%, rgba(97, 255, 83, 0.466) 69%, rgb(143, 0, 95) 100%);
   text-shadow: #91ff70;
   text-indent: 10%;
-  font-family: fantasy;
   /* background-image: url('./res/bg.png'); */
 }
 
@@ -111,7 +110,6 @@ body {
   color: linear-gradient(280deg, rgba(55, 18, 90, 0.603) 0%, rgba(0, 197, 223, 0.527) 37%, rgba(97, 255, 83, 0.466) 69%, rgb(143, 0, 95) 100%);
   text-shadow: #91ff70;
   /* text-indent: 10%; */
-  font-family: fantasy;
 }
 
 .role b {
@@ -120,6 +118,5 @@ body {
   color: linear-gradient(280deg, rgba(255, 200, 83, 0.719) 0%, rgba(152, 0, 223, 0.527) 37%, rgba(97, 255, 83, 0.466) 69%, rgb(143, 0, 95) 100%);
   text-shadow: #91ff70;
   /* text-indent: 10%; */
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 </style>
