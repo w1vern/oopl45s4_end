@@ -64,7 +64,7 @@ function createPeer(userToSignal, callerID) {
     candidate && connection.invoke("Candidate", userToSignal, JSON.stringify(candidate))
   }
 
-  localConnection.ontrack = ({ streams: [ stream ] }) => {
+  localConnection.ontrack = ({ streams: [stream] }) => {
     console.log("STREAM!!! (from create)")
     console.log(stream)
     streams.value[userToSignal] = stream
@@ -92,7 +92,7 @@ onMounted(async () => {
     for (let i = 0; i < users.length; i++) {
       const userID = users[i];
       console.log(userID)
-      if(userID == loginStore.ID) continue
+      if (userID == loginStore.ID) continue
       createPeer(userID, loginStore.ID);
     }
   })
@@ -108,7 +108,7 @@ onMounted(async () => {
       candidate && connection.invoke("Candidate", invoker_id, JSON.stringify(candidate))
     }
 
-    localConnection.ontrack = ({ streams: [ stream ] }) => {
+    localConnection.ontrack = ({ streams: [stream] }) => {
       console.log("STREAM!!! (from offer)")
       console.log(stream)
       streams.value[invoker_id] = stream
@@ -156,6 +156,19 @@ async function getUserMedia() {
     }
   }
 }
+
+const rolesInfo = ref({
+  otherRoles:[],
+  mafia:0
+})
+
+async function getRoles() {
+
+}
+
+async function imHost() {
+  return true
+}
 </script>
 
 <template>
@@ -184,8 +197,20 @@ async function getUserMedia() {
     </div>
   </div>
 
-  <div class="awaiting_page" v-if="isAwaiting">
-
+  <div class="awaiting_page" v-if="isAwaiting&&imHost()">
+    <div class="awaiting_menu">
+      <div class="other_roles" v-for="role in rolesInfo.otherRoles">
+        <input :id="'checkbox_'+role.name" type="checkbox" v-model="role.inMatch">
+        <label :for="'checkbox_'+role.name"> {{role.name}} </label>
+      </div>
+      <div class="mafia">
+        <label for="mafia_counter"> Number Of Mafia </label>
+        <input id="mafia_counter" type="number" v-model="rolesInfo.mafia"/>
+      </div>
+      <div>
+        <input class="enter_button" type="button" value="Start Match" @click="startMatch">
+      </div>
+    </div>
   </div>
 </template>
 
@@ -195,6 +220,7 @@ async function getUserMedia() {
   box-sizing: border-box;
 
 }
+
 .main_cameras {
   aspect-ratio: 16/9;
   box-sizing: border-box;
@@ -238,5 +264,34 @@ async function getUserMedia() {
   border: solid 1px white;
   flex-grow: 1;
   box-sizing: border-box;
+}
+
+.awaiting_page {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.awaiting_menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.enter_button {
+    width: max-content;
+    padding: 6px 12px;
+    border-radius: 4px;
+    color: white;
+    background-color: #550066;
+}
+
+.enter_button:hover {
+    background-color: #770088;
 }
 </style>

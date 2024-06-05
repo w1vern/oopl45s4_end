@@ -1,9 +1,9 @@
 <template>
   <div>
     <VideoBlock class="block" :stream="info.stream" :muted="false" v-if="!disconnect && !disabled"></VideoBlock>
-    <img class="block" src="~/assets/img/death.png" alt="" srcset="" v-if="!disabled && death">
-    <img class="block" src="~/assets/img/disabled.png" alt="" srcset="" v-if="!disconnect && disabled">
-    <img class="block" src="~/assets/img/dissconect.png" alt="" srcset="" v-if="disconnect && !disabled && !death">
+    <img class="block" src="~/assets/img/dead.png" alt="" srcset="" v-if="!disabled && death">
+    <img class="block" src="~/assets/img/sleep.png" alt="" srcset="" v-if="!disconnect && disabled">
+    <img class="block" src="~/assets/img/disconnect.png" alt="" srcset="" v-if="disconnect && !disabled && !death">
   </div>
 </template>
 
