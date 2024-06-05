@@ -1,6 +1,6 @@
 <template>
   <div>
-    <VideoBlock class="block" :stream="info.stream" :muted="false" v-if="!disconnect && !disabled"></VideoBlock>
+    <VideoBlock class="block" :stream="info.stream" :muted="false" v-if="!disconnect && !disabled && !death"></VideoBlock>
     <img class="block" src="~/assets/img/dead.png" alt="" srcset="" v-if="!disabled && death">
     <img class="block" src="~/assets/img/sleep.png" alt="" srcset="" v-if="!disconnect && disabled">
     <img class="block" src="~/assets/img/disconnect.png" alt="" srcset="" v-if="disconnect && !disabled && !death">
@@ -17,11 +17,11 @@ const death = computed(() => {
 })
 
 const disconnect = computed(() => {
-  return info.stream == null
+  return props.info.stream == null
 })
 
 const disabled = computed(() => {
-  return info.sleep;
+  return props.info.sleep;
 })
 
 </script>

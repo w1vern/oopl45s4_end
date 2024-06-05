@@ -60,9 +60,9 @@ async function checkID() {
             </div>
         </div>
         <div class="modal" v-if="showModal">
-            <div class="modal-content">
-                <span class="close-button" @click="closeModal">&times;</span>
-                <input type="text" v-model="matchId" placeholder="Enter match ID" />
+            <div class="modal_content">
+                <span class="close_button" @click="closeModal">&times;</span>
+                <input id="test_field_1" type="text" v-model="matchId" placeholder="Enter match ID" />
                 <button @click="checkID">Connect</button>
                 <p class="error_message" v-if="showError">{{ errorMessage }} </p>
             </div>
@@ -79,6 +79,9 @@ async function checkID() {
 .lobby_form {
     display: flex;
     flex-direction: column;
+    margin-top: 10%;
+    margin-left: 20%;
+    margin-right: 20%;
 }
 
 .top_part {
@@ -116,5 +119,17 @@ async function checkID() {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.modal_content>*{
+    background-color: #111010;
+    color: white;
+    border: none;
+    width: max-content;
+    height: max-content;
+}
+
+.close_button {
+    background-color: #222020;
 }
 </style>

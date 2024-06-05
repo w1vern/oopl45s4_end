@@ -143,10 +143,12 @@ export async function apiMatchesIdGetRoles(MatchID) {
         const response = await $fetch.raw(`/api/Matches/${MatchID}/roles`, {
             method: 'GET',
         })
+        console.log(response._data)
         response._data.forEach(element => {
             res.info[element["playerId"]] = element["roleName"]
         });
     } catch (err) {
+        console.error(err)
         res.isError = true
     }
     return res;
