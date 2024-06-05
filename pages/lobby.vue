@@ -127,7 +127,6 @@ async function checkID() {
     left: 0;
     width: 100vw;
     height: 100vh;
-    padding: 10px;
     justify-content: center;
     align-content: center;
     align-items: center;
@@ -143,6 +142,8 @@ async function checkID() {
     height: max-content;
     border: none;
     border-radius: 2px;
+    margin: 5px;
+    padding: 5px;
 }
 
 .modal_content>*:focus {

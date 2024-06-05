@@ -93,7 +93,9 @@ const configuration = {
   { "url": "stun:stun1.l.google.com:19302" },
   { "url": "stun:stun2.l.google.com:19302" },
   { "url": "stun:stun3.l.google.com:19302" },
-  { "url": "stun:stun4.l.google.com:19302" },]
+  { "url": "stun:stun4.l.google.com:19302" },
+  { "url": "turn:turn01.hubl.in?transport=udp" },
+  { "url": "turn:turn02.hubl.in?transport=tcp" },]
 };
 
 
@@ -222,7 +224,8 @@ const imHost = computed(() => {
 
 
 async function killPlayer(ID) {
-  await apiMatchesIdKill(matchInfo.id, ID)
+  console.log(`Killing ${ID}`)
+  await apiMatchesIdKill(route.params["ID"], ID)
 }
 
 async function nextStage() {

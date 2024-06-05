@@ -97,12 +97,12 @@ body {
   background-color: #ff9d855e;
   display: grid;
   align-items: center;
-  grid-template-columns: .5fr 2fr .05fr;
-  column-gap: 0px;
   text-align: justify;
   color: rgba(41, 41, 41, 0.753);
   color: linear-gradient(280deg, rgba(55, 18, 90, 0.603) 0%, rgba(0, 197, 223, 0.527) 37%, rgba(97, 255, 83, 0.466) 69%, rgb(143, 0, 95) 100%);
   /* justify-content: right; */
+  grid-template-columns: .4fr 2fr .05fr;
+  column-gap: 0px;
 }
 
 .role h1 {

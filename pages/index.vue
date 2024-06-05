@@ -65,7 +65,8 @@ const roles = ref([{
 }
 
 .block_content {
-    padding: 10%;
+    padding-left: 10%;
+    padding-right: 10%;
     width: 100%;
     display: flex;
     flex-direction: column;
