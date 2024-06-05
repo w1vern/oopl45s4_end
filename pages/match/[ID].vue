@@ -14,13 +14,14 @@ let connection = {}
 
 
 const matchInfo = ref({
-  "id": "",
-  "matchStart": null,
-  "matchEnd": null,
-  "matchResult": null,
-  "websocketURL": null,
-  "playersIds": []
+  id: "",
+  matchStart: null,
+  matchEnd: null,
+  matchResult: null,
+  playersIds: []
 })
+
+
 
 const streams = ref({})
 const peers = ref({})
@@ -36,6 +37,7 @@ const players = computed(() => {
     let plr = {
       username: "",
       role: "",
+      playerID: element,
       stream: null
     }
     if (element == loginStore.ID) return;
@@ -45,14 +47,21 @@ const players = computed(() => {
   return plrs
 })
 
-async function updateMatchInfo() {
+const hostPlayer = computed(() =>{
+  for (let i = 0; i < players.value.length; i++) {
+    const plr = players.value[i];
+    if (plr.role == "Host")
+      return plr
+  }
+})
+
+ async function updateMatchInfo() {
   let info = await apiMatchInfo(route.params["ID"])
   if (!info.isError) matchInfo.value = info.info;
   if (info.isError) router.push('/lobby')
 }
 
-var pc_config = { "iceServers": [{ "urls": "stun:stun.l.google.com:19302" }] };
-var pc_constraints = { "optional": [{ "DtlsSrtpKeyAgreement": true }] };
+
 
 function createPeer(userToSignal, callerID) {
 
@@ -157,9 +166,16 @@ async function getUserMedia() {
   }
 }
 
+
+const hostMenuInfo = ref({
+  contextMenuPos: {},
+  show: false,
+  id: ""
+})
+
 const rolesInfo = ref({
-  otherRoles:[],
-  mafia:0
+  otherRoles: [],
+  mafia: 0
 })
 
 async function getRoles() {
@@ -169,19 +185,38 @@ async function getRoles() {
 async function imHost() {
   return true
 }
+
+async function killPlayer(ID) {
+  await apiMatchesIdKill(matchInfo.id, ID)
+}
+
+async function nextStage(){
+
+}
+
+async function getCurrentStage(){
+  
+}
+
 </script>
 
 <template>
   <div class="match_page">
     <div class="left_block">
       <div class="main_cameras" id="host_camera">
-        <video_block></video_block>
+        <video_block :stream="localStream" :muted="true" v-if="imHost()"></video_block>
+        <player :info="hostPlayer" v-else></player>
       </div>
       <div class="main_cameras" id="active_camera">
         <video_block></video_block>
       </div>
-      <div class="main_cameras" id="player_camera">
+      <div class="main_cameras" id="player_camera" v-if="!imHost()">
         <video_block :stream="localStream" :muted="true"></video_block>
+      </div>
+      <div class="host_controller" v-else>
+        <input class="text_field" type="text" value="Field for notes"/>
+        <input class="enter_button" type="button" value="Next Stage" @click="nextStage()"/>
+        <p>{{ getCurrentStage() }}</p>
       </div>
       <div class="service_field">
 
@@ -189,23 +224,28 @@ async function imHost() {
     </div>
     <div class="right_block">
       <div class="other_cameras">
-        <div class="cam" v-for="plr in players">
+        <div class="cam" v-for="plr in players"
+          @contextmenu.prevent="hostMenuInfo.show = true; hostMenuInfo.contextMenuPos = { x: $event.x, y: $event.y }; hostMenuInfo.id=plr.playerID">
           <player :info="plr"></player>
+        </div>
+        <div class="context_menu" v-if="hostMenuInfo.show && imHost()"
+          :style="{ position: 'fixed', left: hostMenuInfo.contextMenuPos.x + 'px', top: hostMenuInfo.contextMenuPos.y + 'px' }">
+          <input class="enter_button" type="button" value="kill him" @click="killPlayer(hostMenuInfo.id)">
         </div>
 
       </div>
     </div>
   </div>
 
-  <div class="awaiting_page" v-if="isAwaiting&&imHost()">
+  <div class="awaiting_page" v-if="isAwaiting && imHost()">
     <div class="awaiting_menu">
       <div class="other_roles" v-for="role in rolesInfo.otherRoles">
-        <input :id="'checkbox_'+role.name" type="checkbox" v-model="role.inMatch">
-        <label :for="'checkbox_'+role.name"> {{role.name}} </label>
+        <input :id="'checkbox_' + role.name" type="checkbox" v-model="role.inMatch">
+        <label :for="'checkbox_' + role.name"> {{ role.name }} </label>
       </div>
       <div class="mafia">
         <label for="mafia_counter"> Number Of Mafia </label>
-        <input id="mafia_counter" type="number" v-model="rolesInfo.mafia"/>
+        <input id="mafia_counter" type="number" v-model="rolesInfo.mafia" />
       </div>
       <div>
         <input class="enter_button" type="button" value="Start Match" @click="startMatch">
@@ -268,6 +308,8 @@ async function imHost() {
 
 .awaiting_page {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   justify-content: center;
@@ -284,14 +326,14 @@ async function imHost() {
 }
 
 .enter_button {
-    width: max-content;
-    padding: 6px 12px;
-    border-radius: 4px;
-    color: white;
-    background-color: #550066;
+  width: max-content;
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: white;
+  background-color: #550066;
 }
 
 .enter_button:hover {
-    background-color: #770088;
+  background-color: #770088;
 }
 </style>

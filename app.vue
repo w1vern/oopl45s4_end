@@ -17,6 +17,10 @@ async function SignUp() {
   router.push('/register')
 }
 
+async function connect_current_match(){
+  router.push('/match/'+loginStore.matchId)
+}
+
 const loginStore = UseLoginStore()
 await callOnce(loginStore.fetch)
 
@@ -37,18 +41,14 @@ onMounted(async () => {
       </div>
     </div>
     <div class="right_menu">
-      <div class="current_match" @click="connect_current_match">
-        <p class="current_match_label">Current match</p>
-      </div>
+      <input class="login_button connect_to_current" type="button" value="Current Match" @click="connect_current_match" v-if="loginStore.InCurrentMatch"/>
       <div class="profile" v-if="loginStore.auth">
         <input class="login_button" value="Sign Out" type="button" @click="SignOut">
         <p class="login">{{ loginStore.username }}</p>
       </div>
       <div class="profile" v-else>
-        <div class="link">
-          <input class="login_button" value="Sign In" type="button" @click="SignIn">
-          <input class="login_button" value="Sign Up" type="button" @click="SignUp">
-        </div>
+        <input class="login_button" value="Sign In" type="button" @click="SignIn">
+        <input class="login_button" value="Sign Up" type="button" @click="SignUp">
       </div>
     </div>
   </div>
@@ -143,7 +143,7 @@ body {
   font-size: 25px;
 }
 
-.link:hover {
+.login_button:hover {
   background-color: #222020;
 }
 
@@ -153,13 +153,21 @@ body {
   width: 100%;
 }
 
-.login_button{
+.login_button {
   height: 100%;
   background-color: #111010;
   color: white;
   border: none;
   padding: 15px;
   font-size: 25px;
+}
+
+.connect_to_current {
+  background-color: #550066;
+}
+
+.connect_to_current:hover {
+  background-color: #770099;
 }
 
 .login {

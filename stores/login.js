@@ -3,7 +3,8 @@ export const UseLoginStore = defineStore('loginStore', {
     ID: '',
     username: '',
     auth: false,
-    InCurrentMatch: false
+    InCurrentMatch: false,
+    matchId: ''
   }),
   actions: {
     async fetch() {
@@ -12,6 +13,7 @@ export const UseLoginStore = defineStore('loginStore', {
       this.auth = info.auth
       this.InCurrentMatch = info.InCurrentMatch
       this.ID = info.ID
+      this.matchId = info.matchId
     }
   }
 })

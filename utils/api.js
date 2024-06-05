@@ -1,9 +1,8 @@
 
-const kostyl = '/'//'http://26.206.10.180:5205/'
 
 export async function apiUsersLogin(form) {
     try {
-        const response = await $fetch.raw(kostyl + 'api/Users/login', {
+        const response = await $fetch.raw('api/Users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -20,7 +19,7 @@ export async function apiUsersLogin(form) {
 
 export async function apiUsersRegister(form) {
     try {
-        const response = await $fetch.raw(kostyl + 'api/Users/register', {
+        const response = await $fetch.raw('api/Users/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -41,7 +40,7 @@ export async function apiLobbiesCreate() {
         status: false
     }
     try {
-        const response = await $fetch.raw(kostyl + 'api/Lobbies/create', {
+        const response = await $fetch.raw('api/Lobbies/create', {
             method: 'POST'
         })
         res.ID = response._data
@@ -55,7 +54,7 @@ export async function apiLobbiesCreate() {
 
 export async function apiLobbiesConnect(ID) {
     try {
-        const response = await $fetch.raw(kostyl + 'api/Lobbies/connect/' + ID, {
+        const response = await $fetch.raw('api/Lobbies/connect/' + ID, {
             method: 'POST'
         })
         return response.status
@@ -70,16 +69,18 @@ export async function apiUsersGetUser() {
         username: '',
         auth: false,
         InCurrentMatch: false,
+        matchId: '',
         isError: false,
         ID: ''
     }
     try {
-        const response = await $fetch.raw(kostyl + 'api/Users', { method: 'GET' })
+        const response = await $fetch.raw('api/Users', { method: 'GET' })
         if (response.status == 200) {
             res.username = response._data.name
             res.InCurrentMatch = response._data.matchInProgress
             res.auth = true
             res.ID = response._data.id
+            res.matchId = response._data.matchInProgressId
         }
     }
     catch (error) {
@@ -91,7 +92,7 @@ export async function apiUsersGetUser() {
 
 export async function apiUsersLogout() {
     try {
-        await $fetch.raw(kostyl + 'api/Users/logout', {
+        await $fetch.raw('api/Users/logout', {
             method: 'POST'
         })
     }
@@ -106,7 +107,7 @@ export async function apiMatchInfo(id) {
         isError: false
     }
     try {
-        const response = await $fetch.raw(kostyl + `api/Matches/${id}`, { method: 'GET' })
+        const response = await $fetch.raw(`api/Matches/${id}`, { method: 'GET' })
         if (response.status == 200) {
             res.info = response._data
         }
@@ -115,4 +116,13 @@ export async function apiMatchInfo(id) {
         res.isError = true
     }
     return res;
+}
+
+export async function apiMatchesIdKill(MatchID, PlayerID) {
+    const response = await $fetch.raw(`api/Matches/${MatchID}/Kill`, {
+        method: 'POST', headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(PlayerID)
+    })
 }
