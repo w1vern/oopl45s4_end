@@ -12,7 +12,9 @@ const props = defineProps({
 
 <template>
   <div class="role">
-    <img :draggable="false" :src="props.role.picturePath"></img>
+    <div>
+      <img :draggable="false" :src="props.role.picturePath"></img>
+    </div>
     <div>
       <h1>{{ role.name }}</h1>
       <b>{{ role.description }}</b>
@@ -33,7 +35,7 @@ body {
 
 .header {
   text-align: center;
-  border: 10px outset;
+  border: 10px solid;
   border-color: rgba(55, 18, 90, 0.322);
   border-radius: 60px;
   /* mix-blend-mode:normal; */
@@ -68,17 +70,22 @@ body {
   /* min-height: 100vh; */
   /* background: transparent; */
   /* display: flex; */
-  justify-content: left;
+  justify-content: center;
   align-items: center;
   margin-top: 30px;
   margin-bottom: 30px;
+  width: 80%;
   height: auto;
-  width: 90%;
   /* box-shadow: -10px -5px 5px rgb(70, 70, 70); */
 }
 
+.role div {
+  justify-content: center;
+  align-items: center;
+}
+
 .role {
-  border: 10px outset;
+  border: 10px solid;
   border-color: rgba(55, 18, 90, 0.322);
   /* border-radius: 60px; */
   /* mix-blend-mode:normal; */
@@ -88,8 +95,8 @@ body {
   background-color: #ff9d855e;
   display: grid;
   align-items: center;
-  grid-template-columns: 1fr 2fr .05fr;
-  column-gap: 5px;
+  grid-template-columns: .5fr 2fr .05fr;
+  column-gap: 0px;
   text-align: justify;
   color: rgba(41, 41, 41, 0.753);
   color: linear-gradient(280deg, rgba(55, 18, 90, 0.603) 0%, rgba(0, 197, 223, 0.527) 37%, rgba(97, 255, 83, 0.466) 69%, rgb(143, 0, 95) 100%);
@@ -114,6 +121,6 @@ body {
   color: linear-gradient(280deg, rgba(255, 200, 83, 0.719) 0%, rgba(152, 0, 223, 0.527) 37%, rgba(97, 255, 83, 0.466) 69%, rgb(143, 0, 95) 100%);
   text-shadow: #91ff70;
   /* text-indent: 10%; */
-  font-family: fantasy;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 </style>

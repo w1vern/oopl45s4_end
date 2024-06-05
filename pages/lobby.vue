@@ -121,6 +121,8 @@ async function checkID() {
     justify-content: space-between;
 }
 
+.modal_content
+
 .modal_content>*{
     background-color: #111010;
     color: white;

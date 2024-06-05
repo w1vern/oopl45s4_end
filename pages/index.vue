@@ -65,7 +65,7 @@ const roles = ref([{
 }
 
 .block_content {
-    padding: 32px;
+    padding: 10%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -77,7 +77,7 @@ const roles = ref([{
 .header {
     width: 100%;
     text-align: center;
-    border: 10px outset;
+    border: 10px solid;
     border-color: rgba(55, 18, 90, 0.322);
     border-radius: 60px;
     /* mix-blend-mode:normal; */
@@ -130,7 +130,7 @@ const roles = ref([{
 
 .roles {
     text-align: center;
-    border: 10px outset;
+    border: 10px solid;
     border-color: rgba(55, 18, 90, 0.322);
     border-radius: 60px;
     /* mix-blend-mode:normal; */

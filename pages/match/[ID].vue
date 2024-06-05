@@ -39,7 +39,9 @@ const players = computed(() => {
       username: "",
       role: "",
       playerID: element,
-      stream: null
+      stream: null,
+      isAlive: true,
+      sleep: false
     }
     //if (element == loginStore.ID) return;
     if (roles.value != undefined && roles.value[element] != null) plr.role = roles.value[element]
@@ -62,16 +64,19 @@ const playersForWebs = computed(() => {
 const hostPlayer = computed(() => {
   for (let i = 0; i < players.value.length; i++) {
     const plr = players.value[i];
-    plr.isAlive = true
-    if (plr.role == "Host")
+    if (plr.role == "Host") {
+      plr.isAlive = true
+      plr.sleep = false
       return plr
+    }
   }
   return {
     isAlive: true,
     username: "",
     role: "",
     playerID: "",
-    stream: null
+    stream: null,
+    sleep: false
   };
 })
 
@@ -278,6 +283,12 @@ async function getCurrentStage() {
 </template>
 
 <style scoped>
+
+.match_page>* {
+  user-select: none;
+  caret-color: transparent;
+}
+
 .cam {
   width: 25%;
   box-sizing: border-box;
@@ -360,4 +371,6 @@ async function getCurrentStage() {
 .enter_button:hover {
   background-color: #770088;
 }
+
+
 </style>
