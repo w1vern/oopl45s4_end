@@ -17,8 +17,8 @@ async function SignUp() {
   router.push('/register')
 }
 
-async function connect_current_match(){
-  router.push('/match/'+loginStore.matchId)
+async function connect_current_match() {
+  router.push('/match/' + loginStore.matchId)
 }
 
 const loginStore = UseLoginStore()
@@ -41,7 +41,8 @@ onMounted(async () => {
       </div>
     </div>
     <div class="right_menu">
-      <input class="login_button connect_to_current" type="button" value="Current Match" @click="connect_current_match" v-if="loginStore.InCurrentMatch"/>
+      <input class="login_button connect_to_current" type="button" value="Current Match" @click="connect_current_match"
+        v-if="loginStore.InCurrentMatch" />
       <div class="profile" v-if="loginStore.auth">
         <input class="login_button" value="Sign Out" type="button" @click="SignOut">
         <p class="login">{{ loginStore.username }}</p>
@@ -96,7 +97,9 @@ body {
 ::-webkit-scrollbar-track {
   background-color: #111010;
 }
+</style>
 
+<style scoped>
 .header {
   height: 7%;
   width: 100%;
@@ -106,11 +109,11 @@ body {
   justify-content: space-between;
 }
 
-.header * {
+.header>* {
   caret-color: transparent;
 }
 
-.header * ::selection {
+.header>*::selection {
   background-color: #9900aa;
 }
 
@@ -143,6 +146,10 @@ body {
   font-size: 25px;
 }
 
+.link:hover {
+  background-color: #222020;
+}
+
 .login_button:hover {
   background-color: #222020;
 }
@@ -162,6 +169,10 @@ body {
   font-size: 25px;
 }
 
+.login_button:hover {
+  background-color: #222020;
+}
+
 .connect_to_current {
   background-color: #550066;
 }
@@ -173,9 +184,5 @@ body {
 .login {
   font-size: 30px;
   padding: 15px;
-}
-
-.login_button:hover {
-  background-color: #222020;
 }
 </style>

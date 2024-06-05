@@ -10,6 +10,7 @@ const loginStore = UseLoginStore()
 const isAwaiting = ref(true)
 const localStream = ref({})
 const playerInfos = ref({})
+const roles = ref({})
 let connection = {}
 
 
@@ -41,6 +42,7 @@ const players = computed(() => {
       stream: null
     }
     if (element == loginStore.ID) return;
+    if (roles.value[element]) plr.role = roles.value[element]
     if (streams.value[element]) plr.stream = streams.value[element]
     plrs.push(plr)
   });
@@ -59,6 +61,8 @@ const hostPlayer = computed(() =>{
   let info = await apiMatchInfo(route.params["ID"])
   if (!info.isError) matchInfo.value = info.info;
   if (info.isError) router.push('/lobby')
+  let _roles = await apiMatchesIdGetRoles(route.params["ID"])
+  if (!_roles.isError) roles.value = _roles.info;
 }
 
 
@@ -183,7 +187,7 @@ async function getRoles() {
 }
 
 async function imHost() {
-  return true
+  return hostPlayer.value.playerID == loginStore.ID
 }
 
 async function killPlayer(ID) {
@@ -329,6 +333,7 @@ async function getCurrentStage(){
   width: max-content;
   padding: 6px 12px;
   border-radius: 4px;
+  border: none;
   color: white;
   background-color: #550066;
 }

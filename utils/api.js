@@ -2,7 +2,7 @@
 
 export async function apiUsersLogin(form) {
     try {
-        const response = await $fetch.raw('api/Users/login', {
+        const response = await $fetch.raw('/api/Users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -19,7 +19,7 @@ export async function apiUsersLogin(form) {
 
 export async function apiUsersRegister(form) {
     try {
-        const response = await $fetch.raw('api/Users/register', {
+        const response = await $fetch.raw('/api/Users/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ export async function apiLobbiesCreate() {
         status: false
     }
     try {
-        const response = await $fetch.raw('api/Lobbies/create', {
+        const response = await $fetch.raw('/api/Lobbies/create', {
             method: 'POST'
         })
         res.ID = response._data
@@ -54,7 +54,7 @@ export async function apiLobbiesCreate() {
 
 export async function apiLobbiesConnect(ID) {
     try {
-        const response = await $fetch.raw('api/Lobbies/connect/' + ID, {
+        const response = await $fetch.raw('/api/Lobbies/connect/' + ID, {
             method: 'POST'
         })
         return response.status
@@ -74,7 +74,7 @@ export async function apiUsersGetUser() {
         ID: ''
     }
     try {
-        const response = await $fetch.raw('api/Users', { method: 'GET' })
+        const response = await $fetch.raw('/api/Users', { method: 'GET' })
         if (response.status == 200) {
             res.username = response._data.name
             res.InCurrentMatch = response._data.matchInProgress
@@ -92,7 +92,7 @@ export async function apiUsersGetUser() {
 
 export async function apiUsersLogout() {
     try {
-        await $fetch.raw('api/Users/logout', {
+        await $fetch.raw('/api/Users/logout', {
             method: 'POST'
         })
     }
@@ -107,7 +107,7 @@ export async function apiMatchInfo(id) {
         isError: false
     }
     try {
-        const response = await $fetch.raw(`api/Matches/${id}`, { method: 'GET' })
+        const response = await $fetch.raw(`/api/Matches/${id}`, { method: 'GET' })
         if (response.status == 200) {
             res.info = response._data
         }
@@ -119,10 +119,35 @@ export async function apiMatchInfo(id) {
 }
 
 export async function apiMatchesIdKill(MatchID, PlayerID) {
-    const response = await $fetch.raw(`api/Matches/${MatchID}/Kill`, {
-        method: 'POST', headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(PlayerID)
-    })
+    try {
+
+
+        const response = await $fetch.raw(`/api/Matches/${MatchID}/Kill`, {
+            method: 'POST', headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(PlayerID)
+        })
+    }
+    catch(err) {
+        
+    }
+}
+
+export async function apiMatchesIdGetRoles(MatchID) {
+    let res = {
+        info: {},
+        isError: false
+    }
+    try {
+        const response = await $fetch.raw(`/api/Matches/${MatchID}/roles`, {
+            method: 'GET',
+        })
+        response._data.forEach(element => {
+            res.info[element["playerId"]] = element["roleName"]
+        });
+    } catch (err) {
+        res.isError = true
+    }
+    return res;
 }
