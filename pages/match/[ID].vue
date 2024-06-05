@@ -88,11 +88,18 @@ async function updateMatchInfo() {
   if (!_roles.isError) roles.value = _roles.info;
 }
 
+const configuration = {
+  "iceServers": [{ "url": "stun:stun.l.google.com:19302" },
+  { "url": "stun:stun1.l.google.com:19302" },
+  { "url": "stun:stun2.l.google.com:19302" },
+  { "url": "stun:stun3.l.google.com:19302" },
+  { "url": "stun:stun4.l.google.com:19302" },]
+};
 
 
 function createPeer(userToSignal, callerID) {
 
-  const localConnection = new RTCPeerConnection();
+  const localConnection = new RTCPeerConnection(configuration);
 
   localStream.value.getTracks().forEach(track => localConnection.addTrack(track, localStream.value));
 
@@ -136,7 +143,7 @@ onMounted(async () => {
   connection.on("IncomingOffer", (invoker_id, description) => {
     console.log("Offer from " + invoker_id)
     console.log(JSON.parse(description))
-    const localConnection = new RTCPeerConnection();
+    const localConnection = new RTCPeerConnection(configuration);
 
     localStream.value.getTracks().forEach(track => localConnection.addTrack(track, localStream.value));
 
@@ -283,7 +290,6 @@ async function getCurrentStage() {
 </template>
 
 <style scoped>
-
 .match_page>* {
   user-select: none;
   caret-color: transparent;
@@ -371,6 +377,4 @@ async function getCurrentStage() {
 .enter_button:hover {
   background-color: #770088;
 }
-
-
 </style>

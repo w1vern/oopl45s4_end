@@ -75,6 +75,7 @@ body {
   margin-top: 30px;
   margin-bottom: 30px;
   width: 80%;
+  margin-left: 10%;
   height: auto;
   /* box-shadow: -10px -5px 5px rgb(70, 70, 70); */
 }
@@ -85,6 +86,7 @@ body {
 }
 
 .role {
+  /* transform: scale(.7); */
   border: 10px solid;
   border-color: rgba(55, 18, 90, 0.322);
   /* border-radius: 60px; */
@@ -110,10 +112,7 @@ body {
   text-shadow: #91ff70;
   /* text-indent: 10%; */
   font-family: fantasy;
-  /* justify-content: left; */
-  /* background-image: url('./res/bg.png'); */
 }
-
 
 .role b {
   font-size: 40px;

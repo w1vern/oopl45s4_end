@@ -27,7 +27,7 @@ async function closeModal() {
 }
 
 async function checkID() {
-    if (await apiLobbiesConnect(matchId.value)==200) {
+    if (await apiLobbiesConnect(matchId.value) == 200) {
         showModal.value = false
         router.push('/match/' + matchId.value)
     }
@@ -121,14 +121,32 @@ async function checkID() {
     justify-content: space-between;
 }
 
-.modal_content
+.modal_content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: 10px;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    background-color: rgba(0, 0, 0, 0.5);
+}
 
-.modal_content>*{
+.modal_content>* {
     background-color: #111010;
     color: white;
-    border: none;
     width: max-content;
     height: max-content;
+    border: none;
+    border-radius: 2px;
+}
+
+.modal_content>*:focus {
+    outline: 2px solid #550066;;
 }
 
 .close_button {
