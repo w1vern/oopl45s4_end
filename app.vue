@@ -111,10 +111,7 @@ body {
 
 .header>* {
   caret-color: transparent;
-}
-
-.header>*::selection {
-  background-color: #9900aa;
+  user-select: none;
 }
 
 .left_menu {
@@ -139,7 +136,7 @@ body {
 }
 
 .link a {
-  user-select: none;
+  
   text-decoration: none;
   color: white;
   padding: 15px;

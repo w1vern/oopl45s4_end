@@ -31,7 +31,13 @@ const peers = ref({})
 
 async function startMatch() {
   isAwaiting.value = false
+  /* listOfRoles.forEach(element => {
+    if (element.status) {
+      rolesInfo.value.otherRoles.push(element.name)
+    }
+  }) */
 }
+
 
 const players = computed(() => {
   let plrs = []
@@ -90,7 +96,7 @@ async function updateMatchInfo() {
   if (!info.isError) matchInfo.value = info.info;
   if (info.isError) router.push('/lobby')
   let _roles = await apiMatchesIdGetRoles(route.params["ID"])
-console.log(_roles)
+  console.log(_roles)
   if (!_roles.isError) roles.value = _roles.info;
 }
 
@@ -100,7 +106,7 @@ const configuration = {
   { "url": "stun:stun2.l.google.com:19302" },
   { "url": "stun:stun3.l.google.com:19302" },
   { "url": "stun:stun4.l.google.com:19302" },
-]
+  ]
 };
 
 
@@ -219,11 +225,14 @@ const rolesInfo = ref({
   mafia: 0
 })
 
-async function getRoles(){
-  await apiRolesGetRoles().forEach(element => {
-    rolesInfo.value.otherRoles.push(element.name)
-  })
-}
+const listOfRoles = computed(() => {
+  let res = []
+  let allRoles = apiRolesGetRoles()
+  for (element in allRoles) {
+    res.push({ name: element.name, status: false })
+  }
+  return res
+}) 
 
 
 const imHost = computed(() => {
@@ -232,7 +241,6 @@ const imHost = computed(() => {
 
 
 async function killPlayer(ID) {
-  console.log(`Killing ${ID}`)
   await apiMatchesIdKill(route.params["ID"], ID)
 }
 
@@ -284,8 +292,8 @@ async function getCurrentStage() {
 
   <div class="awaiting_page" v-if="isAwaiting && imHost">
     <div class="awaiting_menu">
-      <div class="other_roles" v-for="role in rolesInfo.otherRoles">
-        <input :id="'checkbox_' + role.name" type="checkbox" v-model="role.inMatch">
+      <div class="other_roles" v-for="role in listOfRoles">
+        <input :id="'checkbox_' + role.name" type="checkbox" v-model="role.status">
         <label :for="'checkbox_' + role.name"> {{ role.name }} </label>
       </div>
       <div class="mafia">
@@ -343,7 +351,7 @@ async function getCurrentStage() {
   flex-direction: column;
   height: 100%;
   border: solid 1px white;
-  width: 35%;
+  width: 25%;
   padding: 10px;
   box-sizing: border-box;
   gap: 10px;

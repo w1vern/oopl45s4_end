@@ -129,7 +129,7 @@ export async function apiMatchesIdKill(MatchID, PlayerID) {
             body: JSON.stringify(PlayerID)
         })
     }
-    catch(err) {
+    catch (err) {
         console.log(err)
     }
 }
@@ -159,11 +159,11 @@ export async function apiMatchesIdGetRoles(MatchID) {
 export async function apiRolesGetRoles() {
     let res = []
     try {
-        const response = await $fetch.raw(`/api/Matches/${MatchID}/roles`, {
+        const response = await $fetch.raw(`/api/Roles/get_roles`, {
             method: 'GET',
         })
         response._data.forEach(element => {
-            res.push({id: element.ID, name:element.Name, description:element.description})
+            res.push({ id: element.id, name: element.name, description: element.description, priority: element.priority })
         })
     }
     catch (error) {
@@ -175,10 +175,7 @@ export async function apiRolesGetRoles() {
 export async function apiMatchesIdSwitchState(ID) {
     try {
         const response = await $fetch.raw(`/api/Matches/${ID}/switch_state`, {
-            method: 'POST', headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(ID)
+            method: 'POST'
         })
     }
     catch (error) {
@@ -189,10 +186,7 @@ export async function apiMatchesIdSwitchState(ID) {
 export async function apiMatchesIdGetState(ID) {
     try {
         const response = await $fetch.raw(`/api/Matches/${ID}/switch_state`, {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(ID)
+            method: 'GET'
         })
         return response._data
     }
