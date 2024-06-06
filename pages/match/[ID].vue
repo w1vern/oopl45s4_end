@@ -67,7 +67,14 @@ const players = computed(() => {
           break;
         }
     }
-    if (currentStage.value != 0 && role_ != -1 && role_ != undefined && role_.priority != currentStage.value) plr.sleep = true
+    if (currentStage.value != 0 && role_ != -1 && role_ != undefined && role_.priority != currentStage.value) {
+      if(plr.role == mePlayer.value.role && role_.priority == currentStage.value){
+        plr.sleep = false
+      }else {
+        plr.sleep = true
+      }
+      
+    }
     if (streams.value[element]) plr.stream = streams.value[element]
     plrs.push(plr)
   });
