@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { HubConnectionBuilder, JsonHubProtocol } from "@microsoft/signalr";
+import { apiMatchesIdGetState, apiMatchesIdSwitchState } from '~/utils/api';
 
 const router = useRouter()
 const route = useRoute()
@@ -219,7 +220,9 @@ const rolesInfo = ref({
 })
 
 async function getRoles(){
-  return apiRolesGetRoles()
+  await apiRolesGetRoles().forEach(element => {
+    rolesInfo.value.otherRoles.push(element.name)
+  })
 }
 
 
@@ -234,11 +237,11 @@ async function killPlayer(ID) {
 }
 
 async function nextStage() {
-
+  await apiMatchesIdSwitchState(route.params["ID"])
 }
 
 async function getCurrentStage() {
-
+  return await apiMatchesIdGetState(route.params["ID"])
 }
 
 </script>

@@ -97,7 +97,7 @@ export async function apiUsersLogout() {
         })
     }
     catch (error) {
-
+        console.log(error)
     }
 }
 
@@ -130,7 +130,7 @@ export async function apiMatchesIdKill(MatchID, PlayerID) {
         })
     }
     catch(err) {
-        
+        console.log(err)
     }
 }
 
@@ -163,11 +163,40 @@ export async function apiRolesGetRoles() {
             method: 'GET',
         })
         response._data.forEach(element => {
-            res.push(element)
+            res.push({id: element.ID, name:element.Name, description:element.description})
         })
     }
     catch (error) {
         res.push("error")
     }
     return res
+}
+
+export async function apiMatchesIdSwitchState(ID) {
+    try {
+        const response = await $fetch.raw(`/api/Matches/${ID}/switch_state`, {
+            method: 'POST', headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(ID)
+        })
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
+
+export async function apiMatchesIdGetState(ID) {
+    try {
+        const response = await $fetch.raw(`/api/Matches/${ID}/switch_state`, {
+            method: 'GET', headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(ID)
+        })
+        return response._data
+    }
+    catch (error) {
+        return -10
+    }
 }
