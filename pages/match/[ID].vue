@@ -62,7 +62,7 @@ const players = computed(() => {
     for (const key in allRoles.value) {
         const element_ = allRoles.value[key];
         console.log(element_.name)
-        if(element_.name == plr.role) {
+        if(element_.name == mePlayer.value.role) {
           role_ = element_;
           break;
         }
