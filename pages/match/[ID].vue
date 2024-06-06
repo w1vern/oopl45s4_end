@@ -103,6 +103,24 @@ const hostPlayer = computed(() => {
   };
 })
 
+const mePlayer = computed(() => {
+  for (let i = 0; i < players.value.length; i++) {
+    const plr = players.value[i];
+    if (plr.playerID == loginStore.ID) {
+      return plr
+    }
+  }
+  return {
+    isAlive: true,
+    username: "",
+    role: "",
+    playerID: "",
+    stream: null,
+    sleep: false
+  };
+})
+
+
 async function updateMatchInfo() {
   let info = await apiMatchInfo(route.params["ID"])
   if (!info.isError) matchInfo.value = info.info;
@@ -291,7 +309,7 @@ async function getCurrentStage() {
         <p>{{ currentStage }}</p>
       </div>
       <div class="service_field">
-
+        <p>Your role: {{ mePlayer.role }}</p>
       </div>
     </div>
     <div class="right_block">
