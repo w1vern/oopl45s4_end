@@ -31,11 +31,14 @@ const peers = ref({})
 
 async function startMatch() {
   isAwaiting.value = false
-  /* listOfRoles.forEach(element => {
-    if (element.status) {
-      rolesInfo.value.otherRoles.push(element.name)
-    }
-  }) */
+  let request = {roles: []}
+  for(let el_id in listOfRoles.value.roles){
+    let element = listOfRoles.value.roles[el_id]
+    if (element.status)
+      request.roles.push({id: element.id, count: 1})
+  }
+  request.roles.push({id: mafiaRoleId.value, count: listOfRoles.value.mafia})
+  apiMatchesIdStart(route.params["ID"], request)
 }
 
 
@@ -141,7 +144,7 @@ onMounted(async () => {
   connection = new HubConnectionBuilder().withUrl("/api/signal").build()
   await getUserMedia();
   await updateMatchInfo()
-
+  updateRolesList();
   connection.on("Connected", (users) => {
     console.log("Connected")
     console.log(users)
@@ -220,19 +223,22 @@ const hostMenuInfo = ref({
   id: ""
 })
 
-const rolesInfo = ref({
-  otherRoles: [],
-  mafia: 0
-})
 
-const listOfRoles = computed(() => {
-  let res = []
-  let allRoles = apiRolesGetRoles()
-  for (element in allRoles) {
-    res.push({ name: element.name, status: false })
+const listOfRoles = ref({mafia: 0, roles: []})
+const mafiaRoleId = ref("")
+
+async function updateRolesList(){
+  let allRoles = await apiRolesGetRoles()
+  console.log(allRoles)
+  listOfRoles.value.roles = []
+  for (let el_ind in allRoles) {
+    let element = allRoles[el_ind]
+    if(element.name == "Mafia") mafiaRoleId.value = element.id
+    if(element.priority == -1 || element.name == "Mafia") continue
+    listOfRoles.value.roles.push({ id: element.id, name: element.name, priority: element.priority, status: false })
   }
-  return res
-}) 
+}
+
 
 
 const imHost = computed(() => {
@@ -292,13 +298,13 @@ async function getCurrentStage() {
 
   <div class="awaiting_page" v-if="isAwaiting && imHost">
     <div class="awaiting_menu">
-      <div class="other_roles" v-for="role in listOfRoles">
+      <div class="other_roles" v-for="role in listOfRoles.roles">
         <input :id="'checkbox_' + role.name" type="checkbox" v-model="role.status">
         <label :for="'checkbox_' + role.name"> {{ role.name }} </label>
       </div>
       <div class="mafia">
         <label for="mafia_counter"> Number Of Mafia </label>
-        <input id="mafia_counter" type="number" v-model="rolesInfo.mafia" />
+        <input id="mafia_counter" type="number" v-model="listOfRoles.mafia" />
       </div>
       <div>
         <input class="enter_button" type="button" value="Start Match" @click="startMatch">

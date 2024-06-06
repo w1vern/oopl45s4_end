@@ -159,7 +159,7 @@ export async function apiMatchesIdGetRoles(MatchID) {
 export async function apiRolesGetRoles() {
     let res = []
     try {
-        const response = await $fetch.raw(`/api/Roles/get_roles`, {
+        const response = await $fetch.raw(`/api/Roles`, {
             method: 'GET',
         })
         response._data.forEach(element => {
@@ -185,12 +185,26 @@ export async function apiMatchesIdSwitchState(ID) {
 
 export async function apiMatchesIdGetState(ID) {
     try {
-        const response = await $fetch.raw(`/api/Matches/${ID}/switch_state`, {
+        const response = await $fetch.raw(`/api/Matches/${ID}/get_state`, {
             method: 'GET'
         })
         return response._data
     }
     catch (error) {
         return -10
+    }
+}
+
+export async function apiMatchesIdStart(ID, request) {
+    try {
+        const response = await $fetch.raw(`/api/Matches/${ID}/start`, {
+            method: 'POST', headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(request)
+        })
+    }
+    catch (error) {
+        console.log(error)
     }
 }
