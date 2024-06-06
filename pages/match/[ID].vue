@@ -44,7 +44,11 @@ const players = computed(() => {
       sleep: false
     }
     //if (element == loginStore.ID) return;
-    if (roles.value != undefined && roles.value[element] != null) plr.role = roles.value[element]
+    if (roles.value != undefined && roles.value[element] != null) {
+      plr.role = roles.value[element].role
+      plr.isAlive = roles.value[element].isAlive
+    }
+
     if (streams.value[element]) plr.stream = streams.value[element]
     plrs.push(plr)
   });
@@ -85,6 +89,7 @@ async function updateMatchInfo() {
   if (!info.isError) matchInfo.value = info.info;
   if (info.isError) router.push('/lobby')
   let _roles = await apiMatchesIdGetRoles(route.params["ID"])
+console.log(_roles)
   if (!_roles.isError) roles.value = _roles.info;
 }
 
@@ -213,9 +218,10 @@ const rolesInfo = ref({
   mafia: 0
 })
 
-async function getRoles() {
-
+async function getRoles(){
+  return apiRolesGetRoles()
 }
+
 
 const imHost = computed(() => {
   return hostPlayer.value != null && hostPlayer.value.playerID == loginStore.ID
@@ -269,7 +275,6 @@ async function getCurrentStage() {
           :style="{ position: 'fixed', left: hostMenuInfo.contextMenuPos.x + 'px', top: hostMenuInfo.contextMenuPos.y + 'px' }">
           <input class="enter_button" type="button" value="kill him" @click="killPlayer(hostMenuInfo.id)">
         </div>
-
       </div>
     </div>
   </div>
@@ -335,7 +340,7 @@ async function getCurrentStage() {
   flex-direction: column;
   height: 100%;
   border: solid 1px white;
-  width: 20%;
+  width: 35%;
   padding: 10px;
   box-sizing: border-box;
   gap: 10px;

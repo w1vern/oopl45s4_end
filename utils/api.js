@@ -145,11 +145,29 @@ export async function apiMatchesIdGetRoles(MatchID) {
         })
         console.log(response._data)
         response._data.forEach(element => {
-            res.info[element["playerId"]] = element["roleName"]
+            res.info[element["playerId"]] = {
+                role: element["roleName"], isAlive: element["isAlive"]
+            }
         });
     } catch (err) {
         console.error(err)
         res.isError = true
     }
     return res;
+}
+
+export async function apiRolesGetRoles() {
+    let res = []
+    try {
+        const response = await $fetch.raw(`/api/Matches/${MatchID}/roles`, {
+            method: 'GET',
+        })
+        response._data.forEach(element => {
+            res.push(element)
+        })
+    }
+    catch (error) {
+        res.push("error")
+    }
+    return res
 }
