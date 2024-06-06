@@ -42,13 +42,6 @@ async function startMatch() {
   apiMatchesIdStart(route.params["ID"], request)
 }
 
-function getRoleByName(name) {
-    for (const key in allRoles.value) {
-        const element = allRoles.value[key];
-        if(element.name == name) return element
-    }
-}
-
 const players = computed(() => {
   let plrs = []
   matchInfo.value.playersIds.forEach(element => {
@@ -65,15 +58,16 @@ const players = computed(() => {
       plr.role = roles.value[element].role
       plr.isAlive = roles.value[element].isAlive
     }
-    let role = -1
+    let role_ = -1
     for (const key in allRoles.value) {
-        const element = allRoles.value[key];
-        if(element.name == plr.name) {
-          role = element.role;
+        const element_ = allRoles.value[key];
+        console.log(element_.name)
+        if(element_.name == plr.role) {
+          role_ = element_;
           break;
         }
     }
-    if (currentStage != 0 && role != -1 && role.priority != currentStage.value) plr.sleep = true
+    if (currentStage.value != 0 && role_ != -1 && role_ != undefined && role_.priority != currentStage.value) plr.sleep = true
     if (streams.value[element]) plr.stream = streams.value[element]
     plrs.push(plr)
   });
@@ -245,13 +239,12 @@ const listOfRoles = ref({mafia: 0, roles: []})
 const mafiaRoleId = ref("")
 
 async function updateRolesList(){
-  let allRoles = await apiRolesGetRoles()
-  console.log(allRoles)
+  let allRoles_ = await apiRolesGetRoles()
   listOfRoles.value.roles = []
-  allRoles.values = []
-  for (let el_ind in allRoles) {
-    let element = allRoles[el_ind]
-    allRoles.values.push(element)
+  allRoles.value = []
+  for (let el_ind in allRoles_) {
+    let element = allRoles_[el_ind]
+    allRoles.value.push({ id: element.id, name: element.name, priority: element.priority, status: false })
     if(element.name == "Mafia") mafiaRoleId.value = element.id
     if(element.priority == -1 || element.name == "Mafia") continue
     listOfRoles.value.roles.push({ id: element.id, name: element.name, priority: element.priority, status: false })
