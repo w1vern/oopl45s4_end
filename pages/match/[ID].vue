@@ -13,7 +13,8 @@ const localStream = ref({})
 const playerInfos = ref({})
 const roles = ref({})
 let connection = {}
-
+const currentStage = ref(0)
+const allRoles = ref([])
 
 const matchInfo = ref({
   id: "",
@@ -31,16 +32,22 @@ const peers = ref({})
 
 async function startMatch() {
   isAwaiting.value = false
-  let request = {roles: []}
+  let request = []
   for(let el_id in listOfRoles.value.roles){
     let element = listOfRoles.value.roles[el_id]
     if (element.status)
-      request.roles.push({id: element.id, count: 1})
+    request.push({id: element.id, count: 1})
   }
-  request.roles.push({id: mafiaRoleId.value, count: listOfRoles.value.mafia})
+  request.push({id: mafiaRoleId.value, count: listOfRoles.value.mafia})
   apiMatchesIdStart(route.params["ID"], request)
 }
 
+function getRoleByName(name) {
+    for (const key in allRoles.value) {
+        const element = allRoles.value[key];
+        if(element.name == name) return element
+    }
+}
 
 const players = computed(() => {
   let plrs = []
@@ -53,12 +60,12 @@ const players = computed(() => {
       isAlive: true,
       sleep: false
     }
-    //if (element == loginStore.ID) return;
+    
     if (roles.value != undefined && roles.value[element] != null) {
       plr.role = roles.value[element].role
       plr.isAlive = roles.value[element].isAlive
     }
-
+    if (currentStage != 0 && getRoleByName(plr.role) != undefined && getRoleByName(plr.role).priority != currentStage.value) plr.sleep = true
     if (streams.value[element]) plr.stream = streams.value[element]
     plrs.push(plr)
   });
@@ -99,8 +106,10 @@ async function updateMatchInfo() {
   if (!info.isError) matchInfo.value = info.info;
   if (info.isError) router.push('/lobby')
   let _roles = await apiMatchesIdGetRoles(route.params["ID"])
-  console.log(_roles)
+  currentStage.value = await getCurrentStage();
   if (!_roles.isError) roles.value = _roles.info;
+  if (matchInfo.value.matchStart != null)
+    isAwaiting.value =  false;
 }
 
 const configuration = {
@@ -231,8 +240,10 @@ async function updateRolesList(){
   let allRoles = await apiRolesGetRoles()
   console.log(allRoles)
   listOfRoles.value.roles = []
+  allRoles.values = []
   for (let el_ind in allRoles) {
     let element = allRoles[el_ind]
+    allRoles.values.push(element)
     if(element.name == "Mafia") mafiaRoleId.value = element.id
     if(element.priority == -1 || element.name == "Mafia") continue
     listOfRoles.value.roles.push({ id: element.id, name: element.name, priority: element.priority, status: false })
@@ -276,7 +287,7 @@ async function getCurrentStage() {
       <div class="host_controller" v-else>
         <input class="text_field" type="text" value="Field for notes" />
         <input class="enter_button" type="button" value="Next Stage" @click="nextStage()" />
-        <p>{{ getCurrentStage() }}</p>
+        <p>{{ currentStage }}</p>
       </div>
       <div class="service_field">
 
