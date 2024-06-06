@@ -61,15 +61,13 @@ const players = computed(() => {
     let role_ = -1
     for (const key in allRoles.value) {
         const element_ = allRoles.value[key];
-        console.log(element_.name)
-        if(element_.name == mePlayer.value.role) {
+        if(element_.name == mePlayerS.role) {
           role_ = element_;
           break;
         }
     }
-    if (mePlayer.role != "Host")
       if (currentStage.value != 0 && role_ != -1 && role_ != undefined) {
-        if(plr.role == mePlayer.value.role && role_.priority == currentStage.value){
+        if(role_.priority == currentStage.value){
           plr.sleep = false
         }else {
           plr.sleep = true
@@ -109,11 +107,13 @@ const hostPlayer = computed(() => {
     sleep: false
   };
 })
-
+const mePlayerS = ref({})
 const mePlayer = computed(() => {
   for (let i = 0; i < players.value.length; i++) {
     const plr = players.value[i];
     if (plr.playerID == loginStore.ID) {
+      if(mePlayerS.value != plr)
+        mePlayerS.value = plr
       return plr
     }
   }
