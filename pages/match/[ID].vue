@@ -65,7 +65,15 @@ const players = computed(() => {
       plr.role = roles.value[element].role
       plr.isAlive = roles.value[element].isAlive
     }
-    if (currentStage != 0 && getRoleByName(plr.role) != undefined && getRoleByName(plr.role).priority != currentStage.value) plr.sleep = true
+    let role = -1
+    for (const key in allRoles.value) {
+        const element = allRoles.value[key];
+        if(element.name == plr.name) {
+          role = element.role;
+          break;
+        }
+    }
+    if (currentStage != 0 && role != -1 && role.priority != currentStage.value) plr.sleep = true
     if (streams.value[element]) plr.stream = streams.value[element]
     plrs.push(plr)
   });
