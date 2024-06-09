@@ -45,7 +45,8 @@ async function SignUp()
                             required="" type="password" v-model="form.password2">
                     </p>
                     <p>
-                        <input class="enter_button" id="Sign" name="Sign" type="submit" value="Sign Up">
+                        <button_default :value="'Sign Up'" type="submit" color="#550066" hover_color="#770088"
+                            font_color="white" size="15px" />
                     </p>
                     <p v-if="incorrect_data" class="auth_error">
                         {{ error }}
@@ -121,24 +122,6 @@ async function SignUp()
 .remember_me_container {
     width: max-content;
     font-size: 18px;
-}
-
-.enter_button_container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.enter_button {
-    width: max-content;
-    padding: 6px 12px;
-    border-radius: 4px;
-    color: white;
-    background-color: #550066;
-}
-
-.enter_button:hover {
-    background-color: #770088;
 }
 
 .auth_error {

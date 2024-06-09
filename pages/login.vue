@@ -42,7 +42,8 @@ async function SignIn() {
                         <label for="remember_me"> remember me</label>
                     </p>
                     <p>
-                        <button_default @click="" :value="'fdfsdf'" color="#43534"></button_default>
+                        <button_default :value="'Sign In'" type="submit" color="#550066" hover_color="#770088"
+                            font_color="white" size="15px" />
                     </p>
                     <p v-if="incorrect_data" class="auth_error">
                         {{ error }}
@@ -141,22 +142,6 @@ async function SignIn() {
     font-size: 13px;
     color: #9900aa;
 }
-
-.enter_button_container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.enter_button {
-    width: max-content;
-    padding: 6px 12px;
-    border-radius: 4px;
-    color: white;
-    background-color: #550066;
-}
-
-
 
 .auth_error {
     color: red;

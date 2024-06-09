@@ -43,12 +43,10 @@ async function checkID() {
     <div class="lobby_page">
         <div class="lobby_form">
             <div class="top_part">
-                <div class="connect_block">
-                    <input class="button" type="button" value="create match" @click="createMatch">
-                </div>
-                <div class="connect_block">
-                    <input class="button" type="button" value="connect to match" @click="connectToMatch">
-                </div>
+                <button_default :value="'create match'" @click="createMatch" type="button" color="#550066"
+                    hover_color="#770088" font_color="white" size="15px" />
+                <button_default :value="'connect to match'" @click="connectToMatch" type="submit" color="#550066"
+                    hover_color="#770088" font_color="white" size="15px" />
             </div>
             <div class="main_part">
                 <div class="main_part_header">
@@ -63,7 +61,8 @@ async function checkID() {
             <div class="modal_content">
                 <span class="close_button" @click="closeModal">&times;</span>
                 <input id="test_field_1" type="text" v-model="matchId" placeholder="Enter match ID" />
-                <button @click="checkID">Connect</button>
+                <button_default :value="'connect'" @click="checkID" type="button" color="#111010" hover_color="#222020"
+                    font_color="white" size="15px" />
                 <p class="error_message" v-if="showError">{{ errorMessage }} </p>
             </div>
         </div>
@@ -75,6 +74,7 @@ async function checkID() {
     justify-content: center;
     align-content: center;
 }
+
 
 .lobby_form {
     display: flex;
@@ -132,6 +132,7 @@ async function checkID() {
     align-items: center;
     display: flex;
     flex-direction: row;
+    gap: 3px;
     background-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -142,15 +143,22 @@ async function checkID() {
     height: max-content;
     border: none;
     border-radius: 2px;
-    margin: 5px;
     padding: 5px;
+    caret-color: transparent;
 }
 
 .modal_content>*:focus {
-    outline: 2px solid #550066;;
+    outline: 2px solid #550066;
+    ;
 }
 
 .close_button {
+    background-color: #111010;
+    user-select: none;
+    border-radius: 4px;
+}
+
+.close_button:hover {
     background-color: #222020;
 }
 </style>
