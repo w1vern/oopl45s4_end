@@ -42,7 +42,7 @@ async function SignIn() {
                         <label for="remember_me"> remember me</label>
                     </p>
                     <p>
-                        <input class="enter_button" id="Sign" name="Sign" type="submit" value="Sign In">
+                        <button_default @click="" :value="'fdfsdf'" color="#43534"></button_default>
                     </p>
                     <p v-if="incorrect_data" class="auth_error">
                         {{ error }}
@@ -156,9 +156,7 @@ async function SignIn() {
     background-color: #550066;
 }
 
-.enter_button:hover {
-    background-color: #770088;
-}
+
 
 .auth_error {
     color: red;
