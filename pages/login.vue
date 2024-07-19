@@ -1,4 +1,6 @@
-<script setup>
+<script setup lang="ts">
+
+import { defineComponent } from 'vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 const incorrect_data = ref(false)
