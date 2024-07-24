@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { UseLoginStore } from './stores/login';
@@ -33,8 +33,8 @@ onMounted(async () => {
 <template>
   <div class="header" v-if="headerIsVisible">
     <div class="left_menu">
-      <div class="link">
-        <a href="/">HOME</a>
+      <div class="link" id="home_button">
+        <a href="/"><img src="~/assets/img/logo/logo.png" alt="HOME"></a>
       </div>
       <div class="link">
         <a href="/lobby">Lobby</a>
@@ -133,6 +133,10 @@ body {
   height: 100%;
   justify-content: center;
   align-content: center;
+}
+
+#home_button img{
+  height: 80%;
 }
 
 .link a {

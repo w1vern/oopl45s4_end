@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -44,9 +44,9 @@ async function checkID() {
         <div class="lobby_form">
             <div class="top_part">
                 <button_default :value="'create match'" @click="createMatch" type="button" color="#550066"
-                    hover_color="#770088" font_color="white" size="15px" />
+                    hover_color="#770088" font_color="white" size="60px" />
                 <button_default :value="'connect to match'" @click="connectToMatch" type="submit" color="#550066"
-                    hover_color="#770088" font_color="white" size="15px" />
+                    hover_color="#770088" font_color="white" size="60px" />
             </div>
             <div class="main_part">
                 <div class="main_part_header">
